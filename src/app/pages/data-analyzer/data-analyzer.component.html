@@ -1,0 +1,133 @@
+<div class="row">
+    <div class="col-md-2">
+        <nb-card style="height: calc(100vh - 130px)">
+            <nb-card-header>
+                Load Data
+                <br/>
+                <small>* Select a json or csv file from a folder</small>
+            </nb-card-header>
+            <nb-card-body>
+                <label>Upload file</label>
+                <div>
+                    <input type="file" class="form-contol" style="width: 150px;" (change)="onFileChange($event)">
+                </div>
+                <br /><br />
+                <button nbButton fullWidth status="success" (click)="uploadFile()"><i class="fas fa-upload"></i> Upload</button>
+                <br /><br /><br />
+                <label>Or</label>
+                <br /><br /><br />
+                <label>Submit a query to the Data Lake</label>
+                <textarea nbInput fullWidth placeholder="Type your query here"></textarea>
+                <br /><br />
+                <button nbButton fullWidth status="success"><i class="fas fa-database"></i> Upload</button>
+            </nb-card-body>
+        </nb-card>
+    </div>
+    <div class="col-md-8" style="height: calc(100vh - 110px); overflow: auto;">
+        <nb-card>
+            <nb-card-header>
+                Data
+                <br/>
+                <small>*Displays input data</small>
+            </nb-card-header>
+            <nb-card-body>
+                <ng2-smart-table [settings]="settings" [source]="dataModel"></ng2-smart-table>
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card *ngIf="showAnalyzedDataTable">
+            <nb-card-header>Analyzed Data</nb-card-header>
+            <nb-card-body>
+                <ng2-smart-table [settings]="analyzedDataSettings" [source]="analyzedDataModel"></ng2-smart-table>
+            </nb-card-body>
+        </nb-card>
+
+        <div class="box box-default" *ngIf="showAnalyzedDataJson">
+            <json-editor [data]="analyzedDataModel"></json-editor>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <nb-card>
+            <nb-card-header>
+                Select analysis
+                <br />
+                <small>*Select an algorithm</small>
+            </nb-card-header>
+            <nb-card-body>
+                <select [(ngModel)]="selectedAlgorithm" class="form-control">
+                    <optgroup *ngFor="let group of analysisAlgorithms.groups" label="{{group.title}}">
+                        <option *ngFor="let option of group.algorithms" value="{{option.id}}">{{option.title}}</option>
+                    </optgroup>
+                </select>
+            </nb-card-body>
+        </nb-card>
+
+        <nb-card *ngIf="selectedAlgorithm">
+            <nb-card-header>{{selectedAlgorithmObj.options.title}}</nb-card-header>
+            <nb-card-body>
+                <div *ngFor="let item of selectedAlgorithmObj.options.attributes">
+                    <label>{{item.title}}</label>
+                    <select *ngIf="item.type == 'selectSingle' && item.options == 'jsonProperties'" [(ngModel)]="item.selectedAttributeValue"
+                        class="form-control">
+                        <option *ngFor="let val of selectedModelProperties" value="{{val}}">{{val}}</option>
+                    </select>
+
+                    <select *ngIf="item.type == 'selectSingle' && item.options != 'jsonProperties'" [(ngModel)]="item.selectedAttributeValue"
+                        class="form-control">
+                        <option *ngFor="let val of item.options" value="{{val}}">{{val}}</option>
+                    </select>
+
+                    <select *ngIf="item.type == 'selectMultiple' && item.options == 'jsonProperties'" [(ngModel)]="item.selectedAttributeValue"
+                        class="form-control" multiple>
+                        <option *ngFor="let val of selectedModelProperties" value="{{val}}">{{val}}</option>
+                    </select>
+
+                    <div *ngIf="item.type == 'minMax'">
+                        <label>Min</label>
+                        <input type="number" [(ngModel)]="item.selectedAttributeValueMin" class="form-control">
+                        <label>Max</label>
+                        <input type="number" [(ngModel)]="item.selectedAttributeValueMax" class="form-control">
+                    </div>
+
+                    <input type="number" *ngIf="item.type == 'inputNumber'" [(ngModel)]="item.selectedAttributeValue"
+                        class="form-control">
+
+                    <div *ngIf="item.type == 'objectArray'">
+                        <button nbButton (click)="addFeature(item)"><i class="fa fa-plus"></i></button>
+                        <div *ngFor="let innerItem of item.items; let i = index">
+                            <br />
+                            <div style="border-bottom: 1px solid #ccc;">Feature {{i + 1}}</div>
+                            <fieldset *ngFor="let innerAttr of innerItem">
+                                <legend></legend>
+                                <label>{{innerAttr.title}}</label>
+                                <select *ngIf="innerAttr.type == 'selectMultiple' && innerAttr.options == 'jsonProperties'"
+                                    [(ngModel)]="innerAttr.selectedAttributeValue" class="form-control" multiple>
+                                    <option *ngFor="let val of selectedModelProperties" value="{{val}}">{{val}}</option>
+                                </select>
+
+                                <select *ngIf="innerAttr.type == 'selectSingle' && item.options != 'jsonProperties'"
+                                    [(ngModel)]="innerAttr.selectedAttributeValue" class="form-control">
+                                    <option *ngFor="let val of innerAttr.options" value="{{val}}">{{val}}</option>
+                                </select>
+
+                                <input type="text" *ngIf="innerAttr.type == 'inputText'" [(ngModel)]="innerAttr.selectedAttributeValue"
+                                    class="form-control">
+                            </fieldset>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+                <br />
+                <button nbButton fullWidth status="success" (click)="analyseData()">Run</button>
+
+                <br /><br />
+                <button nbButton fullWidth status="success" [disabled]="!enabledExportButtons" (click)="exportJson()">Export
+                    json</button>
+                <br /><br />
+                <button nbButton fullWidth status="success" [disabled]="!enabledExportButtons" (click)="exportCSV()">Export
+                    csv</button>
+                <a id="downloadAnchorElem" style="display:none"></a>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

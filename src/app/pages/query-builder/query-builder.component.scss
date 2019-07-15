@@ -1,0 +1,51 @@
+.sidebar {
+    height: calc(100vh - 110px);
+    background: white;
+    position: relative;
+
+    .footer {
+        position: absolute;
+        bottom: 0px;
+        width: calc(100% - 0px);
+        background: #f1f1f1;
+        padding: 10px;
+        margin: 0 -15px;
+        border-top: 1px solid #ccc;
+    }
+}
+
+.form-control {
+    padding: 5px 10px!important;
+}
+
+.api-details-header {
+    background: #fdf5e6;
+    padding: 10px 10px;
+    margin: 0;
+    border: 1px solid #ccc;
+}
+
+.api-details {
+    background: white;
+    padding: 5px 10px;
+    color: black;
+    margin: 0 15px;
+    label {
+        display: inline-block;
+        width: 100px;
+    }
+}
+
+.api-details.even {
+    background: #f1f1f1;
+}
+
+.api-details-button {
+    display: block;
+    width: 100%;
+    border-radius: 0;
+}
+
+.jsoneditor-menu {
+    background: #5dcfe3!important;
+}
