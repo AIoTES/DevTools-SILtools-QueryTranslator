@@ -17,6 +17,7 @@ export const environment = {
       register: '/auth/register',
       login: '/auth/login',
       logout: '/auth/logout',
+      queryTranlation: "http://localhost:4570/querytranslation"
     },
     token: {
       class: NbAuthJWTToken,

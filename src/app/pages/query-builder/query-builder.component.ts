@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JsonEditorOptions } from 'ang-jsoneditor';
+import * as moment from "moment";
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'ngx-query-builder',
@@ -38,30 +40,9 @@ export class QueryBuilderComponent implements OnInit {
     platforms = [];
     ds = [];
 
-    apis = [{
-        url: "https://api.ds_gr.eu/get_data/luminocity",
-        method: "GET",
-        headers: "Authentication: Basic",
-        body: '{"sensor": "light_sensor"}',
-        showDetails: true
-    }, {
-        url: "https://api.ds_gr.eu/get_data/luminocity",
-        method: "GET",
-        headers: "Authentication: Basic",
-        body: '{"sensor": "light_sensor"}'
-    }];
+    apis = [];
 
-    responseData = [{
-        url: "https://api.ds_gr.eu/get_data/luminocity",
-        method: "GET",
-        headers: "Authentication: Basic",
-        body: '{"sensor": "light_sensor"}'
-    }, {
-        url: "https://api.ds_gr.eu/get_data/luminocity",
-        method: "GET",
-        headers: "Authentication: Basic",
-        body: '{"sensor": "light_sensor"}'
-    }];
+    responseData: any = undefined;
 
     constructor(private http: HttpClient) {
         this.editorOptions = new JsonEditorOptions();
@@ -174,6 +155,8 @@ export class QueryBuilderComponent implements OnInit {
 
             requestModel.startDate.setHours(this.model.fromTime.hour);
             requestModel.startDate.setMinutes(this.model.fromTime.minute);
+
+            requestModel.startDate = (requestModel.startDate as Date).toISOString();
         }
 
         if (this.model.toDate && this.model.toDate != "") {
@@ -181,13 +164,43 @@ export class QueryBuilderComponent implements OnInit {
 
             requestModel.endDate.setHours(this.model.toTime.hour);
             requestModel.endDate.setMinutes(this.model.toTime.minute);
+
+            requestModel.endDate = (requestModel.endDate as Date).toISOString();
         }
 
-        console.log(requestModel);
-
-        this.http.post("http://localhost:4570/querytranslation", requestModel).subscribe((x: any) => {
-            console.log(x);
+        this.http.post(environment.apiServer.endpoints.queryTranlation, requestModel).subscribe((x: any) => {
+            this.apis = x;
         });
+    }
+
+    callApi(api: any) {
+        const headers: any = {}
+
+        if (api.headers.Authentication) {
+            headers.Authorization = api.headers.Authentication;
+        }
+
+        const httpOptions = {
+            headers: new HttpHeaders(headers)
+        };
+        this.http.get(api.url, httpOptions).subscribe((response: any) => {
+            this.http.post("http://160.40.51.191:8080/ActivageTranslator/RDFPrinter", response).subscribe((z: any) => {
+                this.responseData = z;
+            });
+
+        });
+    }
+
+    getApiCallHeaders(api) {
+        var data = [];
+        for (var key in api.headers) {
+            data.push({
+                key: key,
+                value: api.headers[key]
+            });
+        }
+
+        return data;
     }
 
     toggleShowDetails(api) {

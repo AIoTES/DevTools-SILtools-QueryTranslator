@@ -1,15 +1,15 @@
 {
     "deviceTypes": [
         {
-            "id": "motionSensor",
+            "id": "0",
             "label": "Motion Sensor"
         },
         {
-            "id": "doorSensor",
+            "id": "1",
             "label": "Door Sensor"
         },
         {
-            "id": "panicButton",
+            "id": "2",
             "label": "Panic Button"
         }
     ],
@@ -63,6 +63,10 @@
         {
             "id": "sensiNact",
             "label": "sensiNact"
+        },
+        {
+            "id": "Greece",
+            "label": "Greece"
         },
         {
             "id": "Greece-DCCG",

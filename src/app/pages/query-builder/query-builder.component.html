@@ -9,23 +9,26 @@
 
             <div class="form-group">
                 <label for="deviceTypes">Select a device type</label>
-                <ng-multiselect-dropdown [placeholder]="'Select a device'" [data]="deviceTypes" [(ngModel)]="model.deviceType"
-                    [settings]="dropdownSettings" (onSelect)="onDeviceTypeItemSelect($event)" (onSelectAll)="onDeviceTypeSelectAll($event)">
+                <ng-multiselect-dropdown [placeholder]="'Select a device'" [data]="deviceTypes"
+                    [(ngModel)]="model.deviceType" [settings]="dropdownSettings"
+                    (onSelect)="onDeviceTypeItemSelect($event)" (onSelectAll)="onDeviceTypeSelectAll($event)">
                 </ng-multiselect-dropdown>
             </div>
 
             <div class="form-group">
                 <label for="platform">Select a platform</label>
-                <ng-multiselect-dropdown [placeholder]="'Select a platform'" [data]="platforms" [(ngModel)]="model.platform"
-                    [settings]="dropdownSettings" (onSelect)="onPlatformItemSelect($event)" (onSelectAll)="onPlatformSelectAll($event)">
+                <ng-multiselect-dropdown [placeholder]="'Select a platform'" [data]="platforms"
+                    [(ngModel)]="model.platform" [settings]="dropdownSettings" (onSelect)="onPlatformItemSelect($event)"
+                    (onSelectAll)="onPlatformSelectAll($event)">
                 </ng-multiselect-dropdown>
             </div>
 
             <div class="form-group">
                 <label for="ds">Select a deployment site</label>
 
-                <ng-multiselect-dropdown [placeholder]="'Select a site'" [data]="ds" [(ngModel)]="model.ds" [settings]="dropdownSettings"
-                    (onSelect)="onDsItemSelect($event)" (onSelectAll)="onDsSelectAll($event)">
+                <ng-multiselect-dropdown [placeholder]="'Select a site'" [data]="ds" [(ngModel)]="model.ds"
+                    [settings]="dropdownSettings" (onSelect)="onDsItemSelect($event)"
+                    (onSelectAll)="onDsSelectAll($event)">
                 </ng-multiselect-dropdown>
             </div>
 
@@ -57,23 +60,40 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div *ngFor="let api of apis">
-            <h4 class="api-details-header" (click)="toggleShowDetails(api)">{{api.url}}</h4>
-            <div class="row" *ngIf="api.showDetails">
+        <div *ngFor="let api of apis; let i = index">
+            <h4 class="api-details-header" (click)="toggleShowDetails(api)">Api: {{i}}</h4>
+            <div class="row">
                 <div class="col-md-12">
-                    <div class="api-details"><label>URL</label>{{api.url}}</div>
-                    <div class="api-details even"><label>Method</label>{{api.method}}</div>
-                    <div class="api-details"><label>Headers</label>{{api.headers}}</div>
-                    <div class="api-details even"><label>Body</label>{{api.body}}</div>
-                    <button class="api-details-button btn btn-success d-block">Call API</button>
-                    <br/>
+                    <div class="api-details"><label style="font-weight: bold">URL</label>{{api.url}}</div>
+                    <div class="api-details even"><label style="font-weight: bold">Method</label>GET</div>
+                    <div class="api-details">
+                        <label style="vertical-align: top; font-weight: bold;">Headers</label>
+                        <div style="display: inline-block;">
+                            <div *ngFor="let header of getApiCallHeaders(api)">
+                                <label style="font-weight: bold;">{{header.key}}: </label>
+                                <label style="width: auto;">{{header.value}}</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button class="api-details-button btn btn-success d-block" (click)="callApi(api)">Call API</button>
+                    <br />
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-5">
-        <div *ngIf="responseData">
-            <json-editor [data]="responseData"></json-editor>
+        <div *ngIf="responseData"
+            style="max-height: calc(100vh - 150px); background: #f1f1f1;padding: 5px; overflow: auto; ">
+            <!-- <json-editor [data]="responseData"></json-editor> -->
+            <div *ngFor="let item of responseData">
+                <div style="background: white;padding: 10px;">
+                    <code style="white-space: pre-wrap">{{item}}</code>
+                </div>
+                <div style="margin-top: 6px; margin-bottom: 6px; border-bottom: 1px solid #ccc;"></div>
+            </div>
+
+
         </div>
     </div>
 </div>

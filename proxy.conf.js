@@ -5,14 +5,23 @@ const PROXY_CONFIG = {
     "changeOrigin": false,
     "logLevel": "debug"
   },
+  "/querytranslation": {
+    "target": "http://iti-386.iti.gr:4570",
+    "secure": false,
+    "pathRewrite": {
+      "^/querytranslation": ""
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
   "/api": {
-      "target": "http://160.40.50.208:8081",
-      "secure": false,
-      "pathRewrite": {
-        "^/api": ""
-      },
-      "changeOrigin": false,
-      "logLevel": "debug"
+    "target": "http://160.40.50.208:8081",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "changeOrigin": false,
+    "logLevel": "debug"
   }
 }
 
