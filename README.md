@@ -1,76 +1,53 @@
-[![Build Status](https://travis-ci.org/akveo/ngx-admin.svg?branch=master)](https://travis-ci.org/akveo/ngx-admin)
-[![Join the chat at https://gitter.im/ng2-admin/Lobby](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ng2-admin/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Dependency Status](https://david-dm.org/akveo/ngx-admin/status.svg)](https://david-dm.org/akveo/ng2-admin)
+# SIL Query translator 
 
-[Who uses ngx-admin?](https://github.com/akveo/ngx-admin/issues/1645)| [Documentation](https://akveo.github.io/ngx-admin/?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes) | [Installation Guidelines](https://akveo.github.io/ngx-admin/docs/getting-started/what-is-ngxadmin?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes)
+Query Translator is a tool that allows the developer to view the underlying calls that are made towards the SIL when they submit a query for historical data. Given a query, the tool shows the underlying REST API calls and allows the user to call them individually.
 
-# Admin template based on Angular 7+, Bootstrap 4 and <a href="https://github.com/akveo/nebular">Nebular</a>
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=corporate&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=main_pic"><img src="https://i.imgur.com/OIL7rt8.png"/></a>
+Query translator is based on akveo (akveo.com).
 
-### Backend Integration Bundles
-Easy way to integrate ngx-admin with .NET, Node.js, Java or PHP. [Checkout our Store](https://store.akveo.com/?utm_source=github&utm_medium=ngx_admin_readme) for ready to use Backend Bundles.
+## Build and Deploy
 
+To build the server of Query Translator:
+1. Download this repository
+2. Set working directory to the downloaded repo
+3. Run the following command 
+```
+npm install
+```
 
-### With 3 stunning visual themes
+To compile and run the server, run the following command.
+```
+npm start
+```
 
-#### Cosmic
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=cosmic&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/tvAJJhW.png"/></a>
+After the successfull compilation, the server will be deployed locally, accessed through http://localhost:4050/
 
-#### Corporate
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=corporate&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/wbEtUX4.jpg"/></a>
+## Deploy with Docker
 
-#### Light
+Before deploying the tool, the file transfer server must be first deployed: https://git.activageproject.eu/Deployment/DT-AIOTES_docker/src/master/Files_Transfer
 
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?theme=default&utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=themes"><img src="https://i.imgur.com/cb9U34M.jpg"/></a>
+In order to deploy the Query Translator using Docker, download the `docker-compose.yml` in a local directory. Modify the environment variables and ports to reflect your configuration. Specifically:
+* The ***LOGINPATH*** environment variable defines the login address of the file transfer server—e.g., http://localhost:3000/api/activage/login
+* The ***TRANFSER_FILES*** environment variable defines the address of the file transfer server—e.g., http://localhost:3000/api/activage
+* The ***ANALYTICS_URL*** environment variable defines the address (host and port) of a running instance of AIOTES data analytics component—e.g., https://iti-263.iti.gr:9081/analytics
 
-### What's included:
+Then run the following command from the same directory:
 
-- Angular 7+ & Typescript
-- Bootstrap 4+ & SCSS
-- Responsive layout
-- RTL support
-- High resolution
-- Flexibly configurable themes with **hot-reload** (3 themes included)
-- Authentication module with multiple providers
-- 40+ Angular Components
-- 60+ Usage Examples
+```
+docker-compose up -d
+```
 
-### Hot Themes Reload
+## Usage
 
-<a target="_blank" href="http://akveo.com/ngx-admin/pages/dashboard?utm_source=github&utm_medium=ngx_admin_readme&utm_campaign=demo"><img src="https://i.imgur.com/XoJtfvK.gif"/></a>
+Access the webpage of the deployed server. By default, it's on http://localhost:4050/ (if it's build) or http://localhost:4653/ if deployed with docker.
 
-### Demo
+Enter the device details, date range etc. for the wanted query, and press Search. The inputs to the filters will be translated to a query, after the press of ``Search`` button. 
 
-<a target="_blank" href="http://akveo.com/ngx-admin/">Live Demo</a>
+![Example of using SIL Query translator ](./README_usage_example.png) 
 
-## Documentation
-This template is using [Nebular](https://github.com/akveo/nebular) modules set, [here you can find documentation and other useful articles](https://akveo.github.io/nebular/docs/guides/install-based-on-starter-kit).
+## Credits
 
-### Empty starter kit
-Don't need all the pages and modules and just looking for an empty starter kit for your next project? Check out our [starter-kit branch](https://github.com/akveo/ngx-admin/tree/starter-kit).
+The software is based on akveo (akveo.com).
 
-### AngularJS 1.x version
-Here you can find AngularJS 1.x based version: [Blur Admin](http://akveo.github.io/blur-admin/)
+## License
 
-## BrowserStack
-This project runs its tests on multiple desktop and mobile browsers using [BrowserStack](http://www.browserstack.com).
-
-<img src="https://cloud.githubusercontent.com/assets/131406/22254249/534d889e-e254-11e6-8427-a759fb23b7bd.png" height="40" />
-
-## More from Akveo
-
-- [Eva Icons](https://github.com/akveo/eva-icons) - 480+ beautiful Open Source icons
-- [Nebular](https://github.com/akveo/nebular) - Angular Components, Auth and Security
-
-### How can I support developers?
-- Star our GitHub repo :star:
-- Create pull requests, submit bugs, suggest new features or documentation updates :wrench:
-- Follow us on [Twitter](https://twitter.com/akveo_inc) :feet:
-- Like our page on [Facebook](https://www.facebook.com/akveo/) :thumbsup:
-
-### Looking for engineering services? 
-Visit [our homepage](http://akveo.com/) or simply leave us a message to [contact@akveo.com](mailto:contact@akveo.com). We will be happy to work with you!
-
-### From Developers
-Made with :heart: by [Akveo team](http://akveo.com/). Follow us on [Twitter](https://twitter.com/akveo_inc) to get the latest news first!
-We're always happy to receive your feedback!
+Apache 2.0
